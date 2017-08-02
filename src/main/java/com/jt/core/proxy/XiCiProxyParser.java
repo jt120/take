@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * parse xicidaili proxy
  * Created by he on 2017/8/1.
  */
 @Managed(mapKey = "www.xicidaili.com")
@@ -24,29 +25,21 @@ public class XiCiProxyParser implements ProxyParser {
     @Override
     public List<Proxy> parse(String html) {
         Document document = Jsoup.parse(html);
-        Elements elements = document.select("table > tbody > tr");
+        Elements elements = document.select("table[id=ip_list] tr[class]");
         List<Proxy> proxyList = new LinkedList<>();
         for (int i = 0; i < elements.size(); i++) {
             if (i == 0) {
                 continue;
             }
             Element element = elements.get(i);
-            Elements tds = element.getElementsByTag("td");
-            Proxy proxy = new Proxy();
-            proxyList.add(proxy);
-            proxy.setIp(tds.get(0).ownText());
-            proxy.setPort(NumberUtils.toInt(tds.get(1).ownText()));
-            proxy.setAnonymity(tds.get(2).ownText());
-            proxy.setProtocol(tds.get(3).ownText());
-            proxy.setSpeed(tds.get(4).ownText());
-            proxy.setSource(tds.get(5).ownText());
-            Pattern compile = Pattern.compile("(\\d+)分钟");
-            Matcher matcher = compile.matcher(tds.get(6).ownText());
-            if (matcher.find()) {
-                String group = matcher.group(1);
-                DateTime time = DateTime.now().minusMinutes(NumberUtils.toInt(group));
-                proxy.setUpdateTime(time.toDate());
-            }
+            String ip = element.select("td:eq(1)").first().text();
+            String port  = element.select("td:eq(2)").first().text();
+            String isAnonymous = element.select("td:eq(4)").first().text();
+            Proxy p = new Proxy();
+            p.setIp(ip);
+            p.setPort(NumberUtils.toInt(port));
+            p.setAnonymity(isAnonymous);
+            proxyList.add(p);
         }
         return proxyList;
     }

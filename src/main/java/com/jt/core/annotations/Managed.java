@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * like spring Service
  * Created by he on 2017/8/1.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -14,6 +15,6 @@ public @interface Managed {
 
     String value() default "";
 
-    //注入到map里对应的key
+    //map key
     String mapKey() default "";
 }

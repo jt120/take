@@ -36,14 +36,18 @@ public class SinkFileNode implements Node {
         String url = pageContext.getRequest().url().toString();
         String name = DigestUtils.md5Hex(url);
         String path = Take.path;
-
+        File file = new File(path);
+        file.mkdirs();
         try {
             if (StringUtils.equalsIgnoreCase(subtype, "html")) {
                 LOGGER.info("保存html文件 {} {}", url, name);
-                Files.write(pageContext.getHtml(), new File(path, name+".html"), Charset.forName(pageContext.getCharset()));
-            } else if (StringUtils.equalsIgnoreCase(subtype, "jpeg")) {
+                Files.write(pageContext.getHtml(), new File(path, name + ".html"), Charset.forName(pageContext.getCharset()));
+            } else if (StringUtils.equalsIgnoreCase(subtype, "jpeg")
+                    || StringUtils.equalsIgnoreCase(subtype, "png")
+                    || StringUtils.equalsIgnoreCase(subtype, "gif")
+                    ) {
                 LOGGER.info("保存图片 {} {}", url, name);
-                Files.write(body, new File(path, name+".jpeg"));
+                Files.write(body, new File(path, name + "." + subtype));
             }
 
         } catch (IOException e) {

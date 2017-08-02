@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by he on 2017/7/31.
@@ -47,7 +48,7 @@ public class TimeScheduler implements Closeable {
     }
 
     public TakeURL take() throws InterruptedException {
-        return waitedURL.take();
+        return waitedURL.poll(5, TimeUnit.SECONDS);
     }
 
     public void down(PageContext pageContext) throws IOException {
@@ -68,10 +69,12 @@ public class TimeScheduler implements Closeable {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         if (!executorService.isShutdown()) {
             executorService.shutdownNow();
         }
+        LOGGER.info("任务管理器关闭成功");
     }
 
 

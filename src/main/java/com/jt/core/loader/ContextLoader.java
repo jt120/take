@@ -19,7 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * container, load class
  * Created by he on 2017/8/1.
+ * @see Bind
+ * @see Managed
  */
 public class ContextLoader {
 

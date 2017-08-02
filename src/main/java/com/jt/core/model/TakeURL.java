@@ -8,6 +8,7 @@ import okhttp3.HttpUrl;
 public class TakeURL extends BaseModel {
 
     public final HttpUrl httpUrl;
+    //depth for take
     public final int depth;
 
     public TakeURL(HttpUrl httpUrl, int depth) {

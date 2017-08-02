@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * parse ip181 proxy
  * Created by he on 2017/8/1.
  */
 @Managed(mapKey = "www.ip181.com")

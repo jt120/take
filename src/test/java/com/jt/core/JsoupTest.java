@@ -1,5 +1,6 @@
 package com.jt.core;
 
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -71,6 +72,25 @@ public class JsoupTest {
         Matcher matcher = compile.matcher(s);
         if (matcher.find()) {
             System.out.println(matcher.group(1));
+        }
+    }
+
+    @Test
+    public void test03() throws Exception {
+        //以网易为例子
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        Request request = new Request.Builder().url("http://www.hao123.com/qiwenqushi").build();
+        Document doc = Jsoup.parse(client.newCall(request).execute().body().string());
+        //获取后缀为png和jpg的图片的元素集合
+        Elements pngs = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
+        //遍历元素
+        for(Element e : pngs) {
+            String src = e.attr("src");//获取img中的src路径
+            System.out.println(src);
+            HttpUrl link = request.url().resolve(src);
+            if (link == null) continue; // URL is either invalid or its scheme isn't http/https.
+            System.out.println("解析出的图片地址 " + link);
+
         }
     }
 }

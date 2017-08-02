@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * like spring Autowire
  * Created by he on 2017/8/1.
  */
 @Retention(RetentionPolicy.RUNTIME)

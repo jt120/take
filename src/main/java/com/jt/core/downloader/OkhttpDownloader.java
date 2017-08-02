@@ -23,6 +23,7 @@ import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 
 /**
+ * download html
  * Created by he on 2017/7/31.
  */
 public class OkhttpDownloader {
@@ -47,7 +48,7 @@ public class OkhttpDownloader {
     public void down(PageContext context) {
         try {
             OkHttpClient useClient = this.client;
-            if (useProxy) {
+            if (useProxy && context.getTakeURL().depth > 0) {
                 Proxy proxy = ProxyPool.getInstance().get();
                 if (proxy != null) {
                     LOGGER.info("使用代理抓取 {}", proxy);
@@ -99,11 +100,11 @@ public class OkhttpDownloader {
             context.setCharset(charset);
             context.setHtml(new String(bytes, charset));
             htmlProcessor.process(context);
-        }catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             LOGGER.warn("timeout", e);
             this.down(context);
-        }catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.warn("io fail", e);
         }
 
     }

@@ -45,4 +45,5 @@ public class SinkFileNode implements Node {
 ```
 
 参考Scrapy的架构设计
+
 ![image](http://code4craft.github.io/images/posts/webmagic.png)
